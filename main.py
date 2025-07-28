@@ -16,7 +16,7 @@ pygame.display.set_caption("Zombie Survival Game")
 clock = pygame.time.Clock()
 
 # Load assets
-ASSETS = os.path.join(os.path.dirname(__file__), "assets")
+ASSETS = os.path.join(os.path.dirname(_file_), "assets")
 PLAYER_IMAGE = pygame.image.load(os.path.join(ASSETS, "player.png"))
 PLAYER_IMAGE = pygame.transform.scale(PLAYER_IMAGE, (50, 50))
 
@@ -110,6 +110,10 @@ ZOMBIE_TYPES = [
 
 last_boss_spawn_time = 0  # Track when the last boss was spawned
 
+#Soumya Part
+game_state = "menu"  # Possible values: "menu", "playing", "game_over"
+#########
+
 
 #Create Shop options
 def generate_shop():
@@ -177,6 +181,27 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            ##Soumya Part
+            if game_state == "menu":
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    game_state = "playing"
+                    # Reset all game state variables
+                    player_pos = [WIDTH // 2, HEIGHT // 2]
+                    player_health = 100
+                    bullets.clear()
+                    zombies.clear()
+                    powerups.clear()
+                    splatters.clear()
+                    score = 0
+                    coins = 0
+                    wave_number = 1
+                    current_weapon = "pistol"
+                    bullet_damage = 1
+                    player_speed = 5
+                    game_over = False
+                    last_wave_time = time.time()
+                    start_time = time.time()
+######################################################
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN and in_shop:
             mouse_pos = pygame.mouse.get_pos()
@@ -417,15 +442,18 @@ while running:
         win.blit(retry_text, (WIDTH // 2 - 180, HEIGHT // 2 + 30))
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_r]:
+        if keys[pygame.K_r] or keys[pygame.K_RETURN]:
+            #Soumya Part
+            game_state = "menu"
+
             # Reset game
-            pygame.mouse.set_pos(WIDTH // 2, HEIGHT // 2)
-            player_pos = [WIDTH // 2, HEIGHT // 2]
-            player_health = 100
-            score = 0
-            zombies.clear()
-            bullets.clear()
-            game_over = False
+            #pygame.mouse.set_pos(WIDTH // 2, HEIGHT // 2)
+            #player_pos = [WIDTH // 2, HEIGHT // 2]
+            #player_health = 100
+            #score = 0
+            #zombies.clear()
+            #bullets.clear()
+            #game_over = False
         elif keys[pygame.K_ESCAPE]:
             running = False
 
@@ -461,6 +489,18 @@ while running:
 
         exit_text = font.render("Press ESC to Continue", True, (150, 150, 150))
         win.blit(exit_text, (WIDTH // 2 - 140, HEIGHT - 60))
+
+
+    #Soumya Part
+    if game_state == "menu":
+        win.fill((10, 10, 10))
+        title_text = big_font.render("ZOMBIE SURVIVAL", True, (255, 255, 0))
+        start_text = font.render("Click to Start", True, (200, 200, 200))
+        win.blit(title_text, (WIDTH // 2 - 200, HEIGHT // 2 - 80))
+        win.blit(start_text, (WIDTH // 2 - 100, HEIGHT // 2))
+        pygame.display.update()
+        continue  # Skip rest of loop if we're in menu
+        ###########
 
     pygame.display.update()
 
