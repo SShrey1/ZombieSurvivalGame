@@ -111,6 +111,8 @@ ZOMBIE_TYPES = [
 last_boss_spawn_time = 0  # Track when the last boss was spawned
 
 
+
+
 #Create Shop options
 def generate_shop():
     return [
@@ -177,6 +179,7 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN and in_shop:
             mouse_pos = pygame.mouse.get_pos()
@@ -417,7 +420,8 @@ while running:
         win.blit(retry_text, (WIDTH // 2 - 180, HEIGHT // 2 + 30))
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_r]:
+        if keys[pygame.K_r] or keys[pygame.K_RETURN]:
+
             # Reset game
             pygame.mouse.set_pos(WIDTH // 2, HEIGHT // 2)
             player_pos = [WIDTH // 2, HEIGHT // 2]
